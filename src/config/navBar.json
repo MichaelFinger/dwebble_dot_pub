@@ -1,0 +1,24 @@
+{
+  "links": [
+    {
+      "to": "/about",
+      "name": "About",
+      "index": 4
+    },
+    {
+      "to": "/blog",
+      "name": "Blog",
+      "index": 1
+    },
+    {
+      "to": "/contact",
+      "name": "Contact",
+      "index": 3
+    },
+    {
+      "to": "/gallery",
+      "name": "Gallery",
+      "index": 4
+    }
+  ]
+}
