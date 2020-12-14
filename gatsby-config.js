@@ -6,8 +6,8 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-react-helmet',
-    'gatsby-theme-material-ui',
     'gatsby-transformer-json',
+    'gatsby-theme-material-ui',
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: 'gatsby-source-filesystem',

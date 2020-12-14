@@ -1,13 +1,78 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { graphql } from 'gatsby'
-
+import React from 'react';
+import clsx from 'clsx';
+import { graphql } from 'gatsby';
 import { Link } from 'gatsby-theme-material-ui';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 import AppShell from '../components/appShell';
 
+
 // import Features from '../components/Features'
 // import BlogRoll from '../components/BlogRoll'
+
+const useStyles = (image) => makeStyles((theme) => ({
+  fullWidthImage: {
+    width: '100vw',
+    height: '400px',
+    backgroundSize: 'cover',
+    backgroundPosition: 'bottom',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  marginTop0: {
+    marginTop: [[0], '!important']
+  },
+  title: {
+    boxShadow:
+      'rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px',
+    backgroundColor: 'rgb(255, 68, 0)',
+    color: 'white',
+    lineHeight: '1',
+    padding: '0.25em',
+    fontWeight: 'bold'
+  },
+  subheading: {
+    boxShadow: 'rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px',
+    backgroundColor: 'rgb(255, 68, 0)',
+    color: 'white',
+    lineHeight: '1',
+    padding: '0.25em',
+  },
+  titleDiv: {
+    display: 'flex',
+    height: '150px',
+    lineHeight: '1',
+    justifyContent: 'space-around',
+    alignItems: 'left',
+    flexDirection: 'column'
+  },
+  content: {
+    listStyle: 'none',
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: '1.5rem',
+    marginTop: '1.5rem',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'left',
+    alignItems: 'center',
+    li: {
+      padding: '0 2rem 1rem 0',
+      marginBottom: '1.5rem',
+      marginTop: 0
+    }
+  },
+  outerDiv: {
+    backgroundImage: `url(${
+      !!image.childImageSharp ? image.childImageSharp.fluid.src : image
+    })`,
+    backgroundPosition: `top left`,
+    backgroundAttachment: `fixed`,
+  }
+}));
 
 export const IndexPageTemplate = ({
   image,
@@ -17,111 +82,77 @@ export const IndexPageTemplate = ({
   mainpitch,
   description,
   intro,
-}) => (
-  <div>
-    <div
-      className="full-width-image margin-top-0"
-      style={{
-        backgroundImage: `url(${
-          !!image.childImageSharp ? image.childImageSharp.fluid.src : image
-        })`,
-        backgroundPosition: `top left`,
-        backgroundAttachment: `fixed`,
-      }}
-    >
+}) => {
+  const classes = useStyles(image);
+
+  return (
+    <div>
       <div
-        style={{
-          display: 'flex',
-          height: '150px',
-          lineHeight: '1',
-          justifyContent: 'space-around',
-          alignItems: 'left',
-          flexDirection: 'column',
-        }}
+        className={clsx(classes.outerDiv, classes.fullWidthImage, classes.marginTop0)}        
       >
-        <h1
-          className="has-text-weight-bold is-size-3-mobile is-size-2-tablet is-size-1-widescreen"
-          style={{
-            boxShadow:
-              'rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px',
-            backgroundColor: 'rgb(255, 68, 0)',
-            color: 'white',
-            lineHeight: '1',
-            padding: '0.25em',
-          }}
-        >
-          {title}
-        </h1>
-        <h3
-          className="has-text-weight-bold is-size-5-mobile is-size-5-tablet is-size-4-widescreen"
-          style={{
-            boxShadow:
-              'rgb(255, 68, 0) 0.5rem 0px 0px, rgb(255, 68, 0) -0.5rem 0px 0px',
-            backgroundColor: 'rgb(255, 68, 0)',
-            color: 'white',
-            lineHeight: '1',
-            padding: '0.25em',
-          }}
-        >
-          {subheading}
-        </h3>
+        <div className={classes.titleDiv}>
+          <Typography variant="h1" className={classes.title}>
+            {title}
+          </Typography>
+          <Typography variant="h3" className={classes.subheading}>
+            {subheading}
+          </Typography>
+        </div>
       </div>
-    </div>
-    <section className="section section--gradient">
-      <div className="container">
-        <div className="section">
-          <div className="columns">
-            <div className="column is-10 is-offset-1">
-              <div className="content">
+      <section className="section section--gradient">
+        <div className="container">
+          <div className="section">
+            <div className="columns">
+              <div className="column is-10 is-offset-1">
                 <div className="content">
-                  <div className="tile">
-                    <h1 className="title">{mainpitch.title}</h1>
+                  <div className="content">
+                    <div className="tile">
+                      <Typography variant="h1" className={classes.title}>{mainpitch.title}</Typography>
+                    </div>
+                    <div className="tile">
+                      <Typography variant="subtitle1" className={classes.subtitle}>{mainpitch.description}</Typography>
+                    </div>
                   </div>
-                  <div className="tile">
-                    <h3 className="subtitle">{mainpitch.description}</h3>
+                  <div className="columns">
+                    <div className="column is-12">
+                      <Typography variant="h3">{heading}</Typography>
+                      <Typography variant="body1">{description}</Typography>
+                    </div>
                   </div>
-                </div>
-                <div className="columns">
+                  {/* <Features gridItems={intro.blurbs} /> */}
+                  <div className="columns">
+                    <div className="column is-12 has-text-centered">
+                      <Link className="btn" to="/products">
+                        See all products
+                      </Link>
+                    </div>
+                  </div>
                   <div className="column is-12">
-                    <h3 className="has-text-weight-semibold is-size-2">
-                      {heading}
-                    </h3>
-                    <p>{description}</p>
-                  </div>
-                </div>
-                {/* <Features gridItems={intro.blurbs} /> */}
-                <div className="columns">
-                  <div className="column is-12 has-text-centered">
-                    <Link className="btn" to="/products">
-                      See all products
-                    </Link>
-                  </div>
-                </div>
-                <div className="column is-12">
-                  <h3 className="has-text-weight-semibold is-size-2">
-                    Latest stories
-                  </h3>
-                  {/* <BlogRoll /> */}
-                  <div className="column is-12 has-text-centered">
-                    <Link className="btn" to="/blog">
-                      Read more
-                    </Link>
+                    <Typography variant="h3">
+                      Latest stories
+                    </Typography>
+                    {/* <BlogRoll /> */}
+                    <div className="column is-12 has-text-centered">
+                      <Link className="btn" to="/blog">
+                        Read more
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
-);
+      </section>
+    </div>
+  );
+}
 
 const IndexPage = ({ data }) => {
   const { frontmatter } = data.markdownRemark
 
   return (
-    <AppShell navDrawerChildren={null} title="Dweeble">
+    <AppShell>
       <IndexPageTemplate
         image={frontmatter.image}
         title={frontmatter.title}
@@ -133,17 +164,9 @@ const IndexPage = ({ data }) => {
       />
     </AppShell>
   )
-}
+};
 
-IndexPage.propTypes = {
-  data: PropTypes.shape({
-    markdownRemark: PropTypes.shape({
-      frontmatter: PropTypes.object,
-    }),
-  }),
-}
-
-export default IndexPage
+export default IndexPage;
 
 export const pageQuery = graphql`
   query IndexPageTemplate {
@@ -181,4 +204,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

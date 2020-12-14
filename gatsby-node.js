@@ -5,25 +5,6 @@ const { createFilePath } = require('gatsby-source-filesystem')
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions;
 
-  const origGql = `
-  {
-    allMarkdownRemark(limit: 1000) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-          }
-          frontmatter {
-            tags
-            templateKey
-          }
-        }
-      }
-    }
-  }
-`;
-
   return graphql(`
     {
       allMarkdownRemark(limit: 1000) {
@@ -34,6 +15,7 @@ exports.createPages = ({ actions, graphql }) => {
               slug
             }
             frontmatter {
+              tags
               templateKey
             }
           }
@@ -52,40 +34,40 @@ exports.createPages = ({ actions, graphql }) => {
       const id = edge.node.id
       createPage({
         path: edge.node.fields.slug,
-        // tags: edge.node.frontmatter.tags,
+        tags: edge.node.frontmatter.tags,
         component: path.resolve(
           `src/templates/${String(edge.node.frontmatter.templateKey)}.js`
         ),
         // additional data can be passed via context
         context: {
-          id,
+          id
         },
       })
     })
 
-    // // Tag pages:
-    // let tags = []
-    // // Iterate through each post, putting all found tags into `tags`
-    // posts.forEach((edge) => {
-    //   if (_.get(edge, `node.frontmatter.tags`)) {
-    //     tags = tags.concat(edge.node.frontmatter.tags)
-    //   }
-    // })
-    // // Eliminate duplicate tags
-    // tags = _.uniq(tags)
+    // Tag pages:
+    let tags = []
+    // Iterate through each post, putting all found tags into `tags`
+    posts.forEach((edge) => {
+      if (_.get(edge, `node.frontmatter.tags`)) {
+        tags = tags.concat(edge.node.frontmatter.tags)
+      }
+    })
+    // Eliminate duplicate tags
+    tags = _.uniq(tags)
 
-    // // Make tag pages
-    // tags.forEach((tag) => {
-    //   const tagPath = `/tags/${_.kebabCase(tag)}/`
+    // Make tag pages
+    tags.forEach((tag) => {
+      const tagPath = `/tags/${_.kebabCase(tag)}/`
 
-    //   createPage({
-    //     path: tagPath,
-    //     component: path.resolve(`src/templates/tags.js`),
-    //     context: {
-    //       tag,
-    //     },
-    //   })
-    // })
+      createPage({
+        path: tagPath,
+        component: path.resolve(`src/templates/tags.js`),
+        context: {
+          tag,
+        },
+      })
+    })
   })
 }
 
@@ -97,7 +79,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     createNodeField({
       name: `slug`,
       node,
-      value,
+      value
     })
   }
 }
